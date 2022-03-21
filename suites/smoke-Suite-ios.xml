@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Pool" thread-count="2" parallel="tests">
+    <parameter name="os" value="ios"></parameter>
+    <parameter name="project" value="smoke"></parameter>
+    <listeners>
+        <listener class-name="utils.helpers.TestListener"/>
+    </listeners>
+    <test name="Parallel iPhone 11 Pro">
+        <parameter name="name" value="iPhone 11 Pro Max"/>
+        <parameter name="deviceIndex" value="1"/>
+                <groups>
+                    <run>
+                        <include name="Smoke"/>
+                        <exclude name="android"></exclude>
+                    </run>
+                </groups>
+        <classes>
+            <class name="testCases.ExplorePageTest"/>
+            <class name="testCases.LoginPageTest"/>
+            <class name="testCases.SearchTest"/>
+        </classes>
+    </test>
+
+
+    <test name="Parallel iPhone 11 Pro MAX">
+        <parameter name="name" value="iPhone 11"/>
+        <parameter name="deviceIndex" value="0"/>
+        <groups>
+            <run>
+                <include name="Smoke"/>
+                <exclude name="android"></exclude>
+            </run>
+
+        </groups>
+        <classes>
+            <class name="testCases.PTSTests"/>
+            <class name="testCases.ExperiencesTests"/>
+            <class name="testCases.NearMeTest"/>
+            <class name="testCases.ArticleTest"/>
+            
+        </classes>
+    </test>
+</suite>
