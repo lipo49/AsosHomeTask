@@ -18,7 +18,6 @@ public class WebDriverFactory extends BaseTest{
 
     private DesiredCapabilities capabilities;
     private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    private int counter = 0;
 
     public WebDriver init(BrowserType browserType) throws Exception {
         switch (browserType) {
@@ -40,8 +39,8 @@ public class WebDriverFactory extends BaseTest{
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, TimeUnit.MINUTES.toMillis(10)); // Will wait 10 min to next command, helps on debug mode
         capabilities.setCapability("automationName", "UiAutomator2");
         capabilities.setCapability("autoGrantPermissions", true);
-        capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.test.qainterviewapp");
-        capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.test.qainterviewapp.MainActivity");
+        capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.asos.recipes.debug");
+        capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.asos.recipes.presentation.ui.splash.SplashActivity");
         capabilities.setCapability("appium:setWebContentsDebuggingEnabled", "true"); // must when working with webViews
         try {
                 // ------------------------- Local init --------------------

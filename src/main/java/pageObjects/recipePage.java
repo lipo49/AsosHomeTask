@@ -13,18 +13,9 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class ArticlePage extends BasePage {
+public class recipePage extends BasePage {
 
-//    @HowToUseLocators(androidAutomation = LocatorGroupStrategy.CHAIN)
-//    @AndroidFindBy(id = "toolbar")
-//    @AndroidFindBy(className = "android.widget.TextView")
-//    public WebElement articlesPageTitle;
-//
-//    @HowToUseLocators(androidAutomation = LocatorGroupStrategy.CHAIN)
-//    @AndroidFindBy(id = "toolbar")
-//    @AndroidFindBy(className = "android.widget.ImageButton")
-//    public WebElement backButton;
-
+    // Recipe Page Locators
 
     @AndroidFindBy(id = "pictureView")
     public WebElement innerArticleImage;
@@ -49,20 +40,26 @@ public class ArticlePage extends BasePage {
     @AndroidFindBy(className = "android.widget.ImageButton")
     public WebElement backButton;
 
-
-    public ArticlePage(Browser browser) {
+    // Constructor
+    public recipePage(Browser browser) {
         super(browser);
         PageFactory.initElements(new AppiumFieldDecorator(browser.getDriver()),this);
     }
 
+    private boolean exist = true;
 
-    private boolean isElementExist(WebElement element, String desc) throws Exception {
-//        System.out.println(desc);
-        return browser.isElementVisible(element, desc);
+
+    private boolean isElementExist(WebElement element, String desc) {
+        if (!(browser.isElementVisible(element))) {
+            exist = false;
+            report.info(desc + " is not visible");
+        }
+        report.info(desc + " is visible");
+        return true;
     }
 
-    public boolean isAllInnerArticleNecessaryElementsDisplayed() throws Exception {
-        boolean elementExist = true;
+    // Function verifies existence of elements on screen
+    public boolean areAllRecipePageElementsDisplayed() throws Exception {
         isElementExist(backButton,"Back button");
         isElementExist(innerArticleImage,"Recipe Image");
         isElementExist(innerRecipeTitle,"Recipe Title");
@@ -70,36 +67,19 @@ public class ArticlePage extends BasePage {
         isElementExist(instructionsLabel,"Instructions Label");
         isElementExist(instructionsSection,"Instructions section");
         String ingredientsNumber = ingredientsLabel.getText();
-        System.out.println(ingredientsNumber);
         int ingrItems = ingredientsItems.size() -1 ;
         String ingredientsNumberString = String.valueOf(ingrItems);
-        System.out.println(ingredientsNumberString);
         if(!ingredientsNumber.contains(ingredientsNumberString)){
             return false;
         }
-        return elementExist;
+        return exist;
     }
-
+    // Getting recipe page title for assertion
     public String getInnerRecipeTitle() throws IOException, ParserConfigurationException, org.xml.sax.SAXException {
         report.info("Recipe title is: " + browser.getText(innerRecipeTitle));
-        System.out.println(innerRecipeTitle.getText());
         return browser.getText(innerRecipeTitle);
     }
 
 
-//
-//    public String sharedEmailText() {
-//        return articleSharedText;
-//    }
-//
-
-//    public void clickGmailSendButton() throws IOException, ParserConfigurationException, SAXException {
-//        browser.click(sendEmailButton,"Send button");
-//    }
-//
-//    public void goBackToApp() throws ParserConfigurationException, IOException, InterruptedException, SAXException {
-//        browser.goBack();
-//        browser.goBack();
-//    }
 
 }

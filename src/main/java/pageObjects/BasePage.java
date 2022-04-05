@@ -17,7 +17,6 @@ public abstract class BasePage extends BaseTest {
 
     public BasePage(Browser browser) {
         this.browser = browser;
-        wait = new WebDriverWait(browser.getDriver(), 10);
     }
 
     public boolean isAndroid() throws IOException, SAXException, ParserConfigurationException {

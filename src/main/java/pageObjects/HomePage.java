@@ -4,14 +4,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.HowToUseLocators;
 import io.appium.java_client.pagefactory.LocatorGroupStrategy;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.xml.sax.SAXException;
-import utils.configuration.Page;
-import utils.helpers.PagesPointers;
 import utils.web.Browser;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,104 +16,115 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import static utils.configuration.AppStrings.SEARCH_VALUE;
+
 
 public class HomePage extends BasePage {
 
-    @HowToUseLocators(androidAutomation = LocatorGroupStrategy.CHAIN)
-    @AndroidFindBy(id = "toolbar")
-    @AndroidFindBy(className = "android.widget.TextView")
-    public WebElement pageTitle;
-
-    @AndroidFindBy(id = "articleTextView")
-    public List<WebElement> articleTextViews;
-
-    @AndroidFindBy(id = "articleTextView")
-    public WebElement articleTextView;
-
-    @AndroidFindBy(id = "articleImageView")
-    public List<WebElement> articleImage;
+    // Home page Locators
 
     @HowToUseLocators(androidAutomation = LocatorGroupStrategy.CHAIN)
-    @AndroidFindBy(id = "articleListRecyclerView")
-    @AndroidFindBy(className = "android.widget.LinearLayout")
-    public List<WebElement> articleItems;
+    @AndroidFindBy(id = "searchInput")
+    public WebElement searchTextField;
 
+    @AndroidFindBy(id = "difficultySpinner")
+    public WebElement difficultySpinner;
+
+    @AndroidFindBy(id = "preparationTimeSpinner")
+    public WebElement perapareTimeSpinner;
+
+    @HowToUseLocators(androidAutomation = LocatorGroupStrategy.CHAIN)
+    @AndroidFindBy(id = "recipesRecycler")
+    @AndroidFindBy(className = "android.widget.FrameLayout")
+    public List<WebElement> recipieElement;
+
+    @AndroidFindBy(id = "pictureView")
+    public List<WebElement> imageView;
+
+    @AndroidFindBy(id = "titleView")
+    public List<WebElement> recipeTitles;
+
+    @AndroidFindBy(id = "titleView")
+    public WebElement recipeTitle;
+
+    @AndroidFindBy(id = "ingredientsView")
+    public List<WebElement> recipeIngredients;
+
+    @AndroidFindBy(id = "minutesView")
+    public List<WebElement> recipePrepareTime;
+
+    @AndroidFindBy(uiAutomator = "text(\"Hard\")")
+    public WebElement hardDif;
+
+
+    // Constructor
     public HomePage(Browser browser) throws ParserConfigurationException, IOException, SAXException {
         super(browser);
         PageFactory.initElements(new AppiumFieldDecorator(browser.getDriver()),this);
-        articlePage = (ArticlePage) new PagesPointers(Page.ARTICLE_PAGE).getPage();
     }
 
+    private boolean exist = true;
     private int index;
     private String title;
-    private ArticlePage articlePage;
 
-    public String isArticlesTitleCorrect() throws ParserConfigurationException, IOException, SAXException {
-        return browser.getText(pageTitle);
+    // Function verifies existence of elements on screen
+    public boolean homePageElementsVisibility() throws Exception {
+        int rand = new Random().nextInt(recipeTitles.size()-1);
+        isElementExist(imageView.get(rand), "Image element");
+        isElementExist(recipeTitles.get(rand), "Title Element");
+        isElementExist(recipeIngredients.get(rand), "Ingredients Element");
+        isElementExist(recipePrepareTime.get(rand), "Prepare Time Element");
+        isElementExist(searchTextField, "Search Text Field");
+        isElementExist(difficultySpinner, "Difficulties");
+        isElementExist(perapareTimeSpinner, "Prepare Time");
+        return exist;
     }
 
-    private boolean isElementExist(WebElement element, String desc) throws Exception {
-        return browser.isElementVisible(element, desc);
+    private boolean isElementExist(WebElement element, String desc) {
+        if (!(browser.isElementVisible(element))) {
+            exist = false;
+            report.info(desc + " is not visible");
+        }
+        report.info(desc + " is visible");
+        return true;
     }
 
-    public boolean areAllItemElementsDisplayed() throws Exception {
-        if (!isElementExist(pageTitle,"Articles title"))
+    // Function returns true only if No. of recipes before search IS MORE than after search
+    public boolean searchResultsFunctionality() throws ParserConfigurationException, IOException, SAXException {
+        int recipesBeforeSearch = recipieElement.size();
+        browser.type(searchTextField,SEARCH_VALUE,"Search for a recipe");
+        int recipesAfterSearch = recipieElement.size();
+        title = recipeTitle.getText();
+        if(recipesBeforeSearch <= recipesAfterSearch) {
             return false;
-        for (WebElement article: articleItems) {
-            if (!isElementExist(article.findElement(By.id("articleTextView")),"Article text"))
-                return false;
-            if (!isElementExist(article.findElement(By.id("articleImageView")),"Article Image"))
-                return false;
         }
         return true;
     }
 
-    public void clickRandomArticle() throws IOException, ParserConfigurationException, SAXException, InterruptedException {
+    public void clickSelectedRecipe() throws IOException, ParserConfigurationException, SAXException {
+        browser.click(recipeTitle,"Recipe Title");
+    }
+
+    // Function returns true only if No. of recipes before filtering IS MORE than after filtering
+    public boolean difficultyFilterFunctionality() throws ParserConfigurationException, IOException, SAXException {
+        int recipesBeforeFilterApply = recipieElement.size();
+        browser.click(difficultySpinner,"Difficulty Filter");
+        browser.click(hardDif,"Hard difficulty");
+        int recipesAfterFilterApply = recipieElement.size();
+        if(recipesBeforeFilterApply <= recipesAfterFilterApply) {
+            return false;
+        }
+        return true;
+    }
+
+    // Click on random recipe on screen
+    public void clickRandomRecipe() throws IOException, ParserConfigurationException, SAXException, InterruptedException {
             wait = new WebDriverWait(browser.getDriver(), 10);
-            wait.until(ExpectedConditions.visibilityOf(articleTextViews.get(0)));
-            index = new Random().nextInt(articleTextViews.size());
-            title = articleTextViews.get(index).getText();
-            browser.click(articleTextViews.get(index), "Random article");
+            wait.until(ExpectedConditions.visibilityOf(recipeTitles.get(0)));
+            index = new Random().nextInt(recipeTitles.size());
+            title = recipeTitles.get(index).getText();
+            browser.click(recipeTitles.get(index), "Random article");
     }
-
-    public String getRandomArticleTitle() {
-        return title;
-    }
-
-    public boolean verifyArticleTitleInLists() throws IOException, ParserConfigurationException, SAXException, InterruptedException {
-        for (int i = 0; i <5; i++) {
-            browser.swipeDown(2000);
-            clickRandomArticle();
-            String innerArticleTitle = articlePage.innerArticleTitle.getText();
-            if (innerArticleTitle.equals(title)) {
-                report.info("Inner Article's title equals to Home page article's title");
-                browser.goBack();
-            } else {
-                report.info("Inner Article's title NOT equals to Home page article's title");
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-
-    public boolean verifyCrash() throws IOException, ParserConfigurationException, SAXException, InterruptedException {
-        try {
-            while (browser.isElementVisible(articleTextViews.get(index))) {
-                browser.swipeDown(2000);
-                clickRandomArticle();
-                browser.goBack();
-            }
-        } catch (Exception e) {
-            browser.fail(e.getMessage());
-        }
-        return true;
-    }
-
-
-
-
 
 
 }

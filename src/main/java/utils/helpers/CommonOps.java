@@ -14,6 +14,6 @@ public class CommonOps extends BaseTest {
 
     public void openPage(String page) throws IOException, SAXException, ParserConfigurationException, InterruptedException
     {
-            // add here common functions
+
     }
 }

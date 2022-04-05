@@ -6,7 +6,7 @@
     </listeners>
     <test name="Galaxy S10">
         <classes>
-            <class name="testCases.MonzoTests"/>
+            <class name="testCases.Tests"/>
         </classes>
     </test>
 </suite>

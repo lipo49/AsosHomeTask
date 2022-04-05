@@ -45,10 +45,10 @@ public class BaseTest {
     }
 
     @AfterSuite(alwaysRun = true)
-    public void shutDown() throws IOException {
+    public void shutDown()  {
     }
 
-    ///////////////////// Test ///////////////////
+    // Driver building, chooses which driver to run, IOS or Android according to what set on ConfigRun.properties file
     @BeforeTest(alwaysRun = true)
     public void start() throws Exception {
 
@@ -69,7 +69,7 @@ public class BaseTest {
         }
 
     }
-
+    // Driver quiting after each test
     @AfterTest(alwaysRun = true)
     public void close() {
         try {
@@ -92,14 +92,14 @@ public class BaseTest {
     ///////////////////// Method ///////////////////
     @BeforeMethod(alwaysRun = true) //worked
     public void doBeforeTest(Method method){
-        System.out.println("BeforeMethood: " + testNameChanging(method.getName()));
+        System.out.println("BeforeMethod: " + testNameChanging(method.getName()));
     }
 
     @AfterMethod(alwaysRun = true)
     public void doAfterTest(){
     }
 
-    // Change test name string for hte report
+    // Change test name string for the report
     private String testNameChanging(String oldName) {
         String s = "";
         char ch;

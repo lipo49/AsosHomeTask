@@ -1,4 +1,4 @@
-# Monzo Test App
+# Asos Test App
 
 We use Appium for our iOS and Android tests.
 
@@ -33,7 +33,7 @@ For some useful reading or for reference, see:
 - On configRun.properties file write "android" on platform value
 - Connect real device
 
-Run any test from MonzoTests.Java or TestNG smoke-Suite-android.xml file under Suites folder
+Run any test from Tests.java or TestNG smoke-Suite-android.xml file under Suites folder
 
 ### iOS:
 

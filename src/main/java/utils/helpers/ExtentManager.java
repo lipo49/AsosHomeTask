@@ -13,8 +13,8 @@ import java.io.IOException;
 public class ExtentManager extends BaseTest {
     private static ExtentReports extent;
     private static String reportFileName = "Report.html";
-    private static String macPath = System.getProperty("user.dir")+ "/MonzoAppReport" + "/" + getTimeStamp() + "/";
-    private static String windowsPath = System.getProperty("user.dir")+ "\\MonzoAppReport" + "\\" + getTimeStamp() + "\\";
+    private static String macPath = System.getProperty("user.dir")+ "/AsosAppReport" + "/" + getTimeStamp() + "/";
+    private static String windowsPath = System.getProperty("user.dir")+ "\\AsosAppReport" + "\\" + getTimeStamp() + "\\";
     private static String macReportFileLoc = macPath + "/" + reportFileName;
     private static String winReportFileLoc = windowsPath + "\\" + reportFileName;
     public static ExtentReports getInstance() throws ParserConfigurationException, SAXException, IOException {
@@ -39,7 +39,7 @@ public class ExtentManager extends BaseTest {
         String reportFileLocation = null;
                 reportFileLocation = macReportFileLoc;
                 createReportPath(macPath);
-                System.out.println("ExtentReport Path for MAC: " + macPath + "\n");
+        report.info("ExtentReport Path for MAC: " + macPath + "\n");
         return reportFileLocation;
     }
     //Create the report path if it does not exist
@@ -47,12 +47,12 @@ public class ExtentManager extends BaseTest {
         File testDirectory = new File(path);
         if (!testDirectory.exists()) {
             if (testDirectory.mkdir()) {
-                System.out.println("Directory: " + path + " is created!" );
+                report.info("Directory: " + path + " is created!" );
             } else {
-                System.out.println("Failed to create directory: " + path);
+                report.info("Failed to create directory: " + path);
             }
         } else {
-            System.out.println("Directory already exists: " + path);
+            report.info("Directory already exists: " + path);
         }
     }
 }

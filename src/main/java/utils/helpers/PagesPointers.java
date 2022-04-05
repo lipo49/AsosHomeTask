@@ -1,7 +1,7 @@
 package utils.helpers;
 
 import org.xml.sax.SAXException;
-import pageObjects.ArticlePage;
+import pageObjects.recipePage;
 import pageObjects.HomePage;
 import testCases.BaseTest;
 import utils.configuration.Page;
@@ -27,8 +27,8 @@ public class PagesPointers extends BaseTest {
                 object = browser.get().isAndroid() ? new HomePage(browser.get()) : new HomePage(browser.get());
                 break;
 
-            case Page.ARTICLE_PAGE:
-                object = browser.get().isAndroid() ? new ArticlePage(browser.get()) : new ArticlePage(browser.get());
+            case Page.RECIPE_PAGE:
+                object = browser.get().isAndroid() ? new recipePage(browser.get()) : new recipePage(browser.get());
                 break;
 
         }
