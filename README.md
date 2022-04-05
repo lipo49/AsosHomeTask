@@ -48,5 +48,5 @@ Run any test / test class or TestNG suite xml file
 
 ### More Documentation about the project structure and setup you can fing here:
 
-- [Setup and structure](https://docs.google.com/document/d/1xRnQpVide27NS5V0vEABr9bX13gbXoskr6H7o5OZnng/edit?usp=sharing)
+- [Setup and structure](https://docs.google.com/document/d/111ThN4YhLmz7q-e0hewMcTIjly_Kt_koHsMa3QrvSpI/edit?usp=sharing)
 
